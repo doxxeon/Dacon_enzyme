@@ -38,14 +38,107 @@
 
 ## 🧪 실험 기록 요약
 
-| Test | Features                 | Top Indices | Ensemble Weights | Local Score | Public Score |
-| ---- | ------------------------ | ----------- | ---------------- | ----------- | ------------ |
-| 1    | Morgan + MACCS           | 500         | (0.5,0.5,0)      | 0.6125      | 0.6931       |
-| 3    | Morgan + MACCS           | 500         | (0.33,0.33,0.33) | 0.6147      | -            |
-| 5    | Morgan + RDKit + Mol2Vec | 500         | (0.33,0.33,0.33) | 0.6157      | 0.7498       |
-| 10   | Morgan + RDKit + Mol2Vec | 300         | (0.4,0.3,0.3)    | **0.6192**  | 0.66         |
+### 📄 Expriments Notes
 
-✅ **베스트 스코어 모델:** Feature 3종 + Top 300 Feature + Ensemble Weight 조정
+**[ First Test ]**   
+- Feature: Morgan Fingerprint + MACCS (500 top)
+- top_indices: 500
+- KFold + LightGBM + XGBoost (learning_rate = 0.01)
+
+= Local Score: 0.6125 / NRMSE: 0.2358 / Pearson: 0.4607 
+
+= **Public Score: 0.69314**
+
+---
+
+**[ Second Test ]**   
+- Feature: Morgan Fingerprint + MACCS (500 top)
+- top_indices: 1500
+- KFold + LightGBM + XGBoost (learning_rate = 0.02)
+
+= Local Score: 0.6032 / NRMSE: 0.2380 / Pearson: 0.4445
+
+---
+
+**[ Third Test ]**   
+- Feature: Morgan Fingerprint + MACCS (500 top)
+- top_indices: 500
+- KFold + LightGBM + XGBoost + CatBoost (learning_rate = 0.01)
+
+= Local Score: 0.6147 / NRMSE: 0.2352 / Pearson: 0.4646
+
+---
+
+**[ Fourth Test ]**
+- Feature: Morgan Fingerprint + RDKit 2D Description (500 top)
+- top_indices: 500
+- KFold + LightGBM + XGBoost + CatBoost (learning_rate = 0.01)
+
+= Local Score: 0.6154 / NRMSE: 0.2351 / Pearson: 0.4659
+
+---
+
+**[ Fifth Test ]**
+- Feature: Morgan Fingerprint + RDKit 2D Description + Mol2Vec Embedding (500 top)
+- top_indices: 500
+- KFold + LightGBM + XGBoost + CatBoost (learning_rate = 0.01)
+
+= Local Score: 0.6157 / NRMSE: 0.2350 / Pearson: 0.4663   
+
+= **Public Score: 0.74983**
+
+---
+
+**[ Sixth Test ]**
+- Feature: Morgan Fingerprint + RDKit 2D Description + Mol2Vec Embedding (500 top)
+- top_indices: 1000
+- KFold + LightGBM + XGBoost + CatBoost (Ensemble Weight 0.5:0.2:0.3)
+
+= Local Score: 0.6138 / NRMSE: 0.2355 / Pearson: 0.4632   
+
+---
+
+**[ Seventh Test ]**
+- Feature: Morgan Fingerprint + RDKit 2D Description + Mol2Vec Embedding (500 top)
+- top_indices: 500
+- KFold + LightGBM + XGBoost + CatBoost (Ensemble Weight 0.5:0.2:0.3)
+
+= Local Score: 0.6157 / NRMSE: 0.2350 / Pearson: 0.4663   
+
+---
+
+**[ Eighth Test ]**
+- Feature: Morgan Fingerprint + RDKit 2D Description + Mol2Vec Embedding (500 top)
+- top_indices: 500
+- KFold + LightGBM + XGBoost + CatBoost (Ensemble Weight 0.5:0.2:0.3)
+- Hyperparameter (LightGBM, XGBoost): Lr [0.01 > 0.015], max_depth [7 > 9], subsample, colsample_bytree [0.8 > 0.9]
+- Hyperparameter (CatBoost): Lr [0.01 > 0.015], depth [7 > 9]
+
+= Local Score: 0.6119 / NRMSE: 0.2359 / Pearson: 0.4597   
+
+---
+
+**[ Ninth Test ]**
+- Feature: Morgan Fingerprint + RDKit 2D Description + Mol2Vec Embedding (500 top)
+- top_indices: 500
+- KFold + LightGBM + XGBoost + CatBoost (Ensemble Weight 0.5:0.2:0.3)
+- Hyperparameter (LightGBM): Lr [0.015 > 0.01], max_depth [9 > 7], subsample, colsample_bytree [0.9 > 0.8], num_leaves [64 > 128]
+- Hyperparameter (XGBoost): Lr [0.015 > 0.01], max_depth [9 > 7], subsample, colsample_bytree [0.9 > 0.8]
+
+= Local Score: 0.6147 / NRMSE: 0.2353 / Pearson: 0.4646 
+
+---
+
+**[ Tenth Test ]**
+- Feature: Morgan Fingerprint + RDKit 2D Description + Mol2Vec Embedding (500 top)
+- top_indices: 300
+- KFold + LightGBM + XGBoost + CatBoost (Ensemble Weight 0.4:0.3:0.3)
+- Hyperparameter (LightGBM): num_leaves [128 > 64]
+
+= Local Score: 0.6192 / NRMSE: 0.2342 / Pearson: 0.4725
+
+= **Public Score: 0.66617**
+
 
 ## 💡 사용 방법
 
